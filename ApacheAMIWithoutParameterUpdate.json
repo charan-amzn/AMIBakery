@@ -1,0 +1,88 @@
+{
+   "description":"Systems Manager Automation Demo – Create Golden AMI with Apache Installed",
+   "schemaVersion":"0.3",
+   "assumeRole":"the role ARN you created",
+   "parameters":{
+      "sourceAMIid":{
+         "type":"String",
+         "description":"AMI to patch",
+         "default":"{{ssm:latestAmi}}"
+      },
+      "targetAMIname":{
+         "type":"String",
+         "description":"Name of new AMI",
+         "default":"goldenAMI-{{global:DATE_TIME}}"
+      }
+   },
+   "mainSteps":[
+      {
+         "name":"startInstances",
+         "action":"aws:runInstances",
+         "timeoutSeconds":1200,
+         "maxAttempts":1,
+         "onFailure":"Abort",
+         "inputs":{
+            "ImageId":"{{ sourceAMIid }}",
+            "InstanceType":"m3.large",
+            "MinInstanceCount":1,
+            "MaxInstanceCount":1,
+            "IamInstanceProfileName":"the name of the IAM role you created"
+         }
+      },
+      {
+         "name":"installApache",
+         "action":"aws:runCommand",
+         "timeoutSeconds":1200,
+         "maxAttempts":1,
+         "onFailure":"Continue",
+         "inputs":{
+            "DocumentName":"AWS-RunShellScript",
+            "InstanceIds":[
+               "{{ startInstances.InstanceIds }}"
+            ],
+            "Parameters":{
+               "commands":["#!/bin/bash", "yum install -y httpd", "systemctl start httpd.service", "systemctl enable httpd.service"]
+            }
+         }
+      },
+      {
+         "name":"stopInstance",
+         "action":"aws:changeInstanceState",
+         "maxAttempts":1,
+         "onFailure":"Continue",
+         "inputs":{
+            "InstanceIds":[
+               "{{ startInstances.InstanceIds }}"
+            ],
+            "DesiredState":"stopped"
+         }
+      },
+      {
+         "name":"createImage",
+         "action":"aws:createImage",
+         "maxAttempts":1,
+         "onFailure":"Continue",
+         "inputs":{
+            "InstanceId":"{{ startInstances.InstanceIds }}",
+            "ImageName":"{{ targetAMIname }}",
+            "NoReboot":true,
+            "ImageDescription":"AMI created by EC2 Automation"
+         }
+      },
+      {
+         "name":"terminateInstance",
+         "action":"aws:changeInstanceState",
+         "maxAttempts":1,
+         "onFailure":"Continue",
+         "inputs":{
+            "InstanceIds":[
+               "{{ startInstances.InstanceIds }}"
+            ],
+            "DesiredState":"terminated"
+         }
+      }
+   ],
+   "outputs":[
+      "createImage.ImageId"
+   ]
+}
