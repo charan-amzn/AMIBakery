@@ -32,7 +32,6 @@
       {
          "name":"installApache",
          "action":"aws:runCommand",
-         "timeoutSeconds":1200,
          "maxAttempts":1,
          "onFailure":"Continue",
          "inputs":{
