@@ -40,7 +40,7 @@
                "{{ startInstances.InstanceIds }}"
             ],
             "Parameters":{
-               "commands":["#!/bin/bash", "yum install -y httpd", "systemctl start httpd.service", "systemctl enable httpd.service"]
+               "commands":["#!/bin/bash", "dnf install -y https://s3.us-east-1.amazonaws.com/amazon-ssm-us-east-1/latest/linux_amd64/amazon-ssm-agent.rpm", "yum install -y httpd", "sudo systemctl enable amazon-ssm-agent", "sudo systemctl start amazon-ssm-agent", "systemctl start httpd.service", "systemctl enable httpd.service"]
             }
          }
       },
