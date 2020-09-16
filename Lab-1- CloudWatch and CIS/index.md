@@ -3,7 +3,7 @@ Custom Build and Test Components developed for AWS EC2 Image Builder (https://do
 
 ## Configuration
 1. Create a S3 bucket (configuration-bucket) and place files in `S3` folder of component.
-2. Create IAM Role and attach following required policies:
+2. Create EC2 Instance Role and attach following required policies:
 - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
 - arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilder
 3. Replace `<bucket-name>` with your newly created bucket name (configuration-bucket) in yaml component file
@@ -11,6 +11,14 @@ Custom Build and Test Components developed for AWS EC2 Image Builder (https://do
 5. [Create Components](https://console.aws.amazon.com/imagebuilder/home#createComponent) that you want to use by coping yaml component file
 6. Select IAM Role that you have created on Step 2
 7. Name your pipeline
+  - For build components pick 
+      update-linux
+      update-linux-kernel-mainline
+      setup-cloudwatch-agent
+      cis-benchmarks
+  - For test components pick
+      chrony-time-configuration-test
+      inspector-test-linux
 8. Name your AMI
 9. Trigger pipeline
 
