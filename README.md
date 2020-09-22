@@ -49,14 +49,31 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 
 4. Go to next step, give role a name such as SSM_Instance_Role and click Create Role
 ![Create Role](/images/createrole.png)
+5. Follow [this deep link to create IAM Policy Topic named SSMSendCommand](https://console.aws.amazon.com/iam/home?region=us-east-1#/policies$new?step=edit)
+   ```json
+      {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ssm:SendCommand",
+                "ec2:CreateTags"
+            ],
+            "Resource": "*"
+        }
+      ]
+      }
+  ```
+6. Navigate to IAM Roles tab and search for SSM_Instance_Role created above 
+7. Click Attach policies and attach the newly created SSMSendCommand policy 
 
-This role is used by SSM agent running on EC2 Instance to execute custom scripts on base AMI and create golden AMI respectively.
-
-5. Follow [this deep link to create SSM Topic](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/create-topic)
-6. Give SNS Topic a name such as ImageBuilder and Create Topic 
-7. Click Create Subscription, select Protocol as Email and give your email address as Endpoint
+8. Follow [this deep link to create SNS Topic](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/create-topic)
+9. Give SNS Topic a name such as ImageBuilder and Create Topic 
+10. Click Create Subscription, select Protocol as Email and give your email address as Endpoint
 ![Create SNS Subscription](/images/sns.png)
-8. You will get an email to confirm subscription and confirm it accordingly
+9. You will get an email to confirm subscription and confirm it accordingly
 
 ## Step-4: Create Component Documents for EC2 Image Builder 
 1. Follow [this deep link to navigate to Components tab of EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewComponents)
