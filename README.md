@@ -28,3 +28,11 @@ Click on **AWS Console** on dashboard.
 ![Event Engine AWS Console](/images/event-engine-aws-console.png)
 
 Take the defaults and click on **Open AWS Console**. This will open AWS Console in a new browser tab.
+
+## Step-2: Create an Amazon S3 Bucket and Copy Artifacts 
+
+1. Follow [this deep link to navigate to Amazon S3 console.] (https://s3.console.aws.amazon.com/s3/home?region=us-east-1#)
+2. Click on Create Bucket and create a bucket with unique name such as "configuration-bucket-***teamhash***"
+3. While creating bucket leave rest of settings untouched
+4. Now navigate to **cloudwatch** and **cis-benchmark** directories in the workshop module and copy all the files in s3 folder to bucket you created in step 3
+![copy artifacts](/images/s3files.png)  
