@@ -31,13 +31,18 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 
 ## Step-2: Create an Amazon S3 Bucket and Copy Artifacts 
 
-1. Follow [this deep link to navigate to Amazon S3 console.] (https://s3.console.aws.amazon.com/s3/home?region=us-east-1#)
+In this step, we will create an S3 bucket and upload artifacts that will later be used within build component of EC2 Image Builder Pipeline. Artifacts include configuration files for CloudWatch Agent and CIS Benchmark hardening
+
+1. Follow [this deep link to navigate to Amazon S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-east-1#)
 2. Click on Create Bucket and create a bucket with unique name such as "configuration-bucket-***teamhash***"
 3. While creating bucket leave rest of settings untouched
 4. Now navigate to **cloudwatch** and **cis-benchmarks** directories in the workshop module and copy all the files in s3 folder to bucket you created in step 3
 ![copy artifacts](/images/s3files.png)  
 
 ## Step-3: Create SSM Instance Role and SNS subscription
+
+EC2 Image Builder leverages SSM Automation for Orchestrating Build/Test activities. In this step, we will create an SSM Instance Role that pipeline can leverage while building Golden Image. In addition, we will also create SNS topic and subscription to ensure we get notifications at each stage 
+
 1. Follow [this deep link to create an EC2 Instance Role with SSM Access](https://console.aws.amazon.com/iam/home?region=us-east-1#/roles$new?step=type&commonUseCase=EC2%2BEC2&selectedUseCase=EC2)
 2. Confirm that **AWS service** and **EC2** are selected, then click **Next** to view permissions.
 3. Search for following 3 policies and select check box beside them 
@@ -78,6 +83,9 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 9. You will get an email to confirm subscription and confirm it accordingly
 
 ## Step-4: Create Component Documents for EC2 Image Builder 
+
+In this step, we will create custom Components for Build phase of Pipeline.
+
 1. Follow [this deep link to navigate to Components tab of EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewComponents)
 2. Click on Create Component and select following settings -
    1. Compatible OS Versions "Amazon Linux 2"
@@ -98,7 +106,10 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 ![Final Component Screen](/images/createcomponent-final.png) 
 
 ## Step-5: Create EC2 Image Builder Pipeline  
-1. Follow [this deep link to navigate to Pipeline tab of EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewPipeline)
+
+In this step, we will create a EC2 Image Builder Recipe and Pipeline by leveraging components, IAM Role and SNS topics built in previous steps. 
+
+1. Follow [this deep link to navigate to Pipeline tab of EC2 Image Builder console](https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewPipeline)
 2. Click Create Image Pipeline and leave Select managed images bullet checked and pick Amazon Linux as Image OS. 
 3. Click on Browse images and select "Amazon Linux 2 x86 | Version 2020.9.4" 
 ![Recipe definition I](/images/recipe-1.png) 
@@ -124,10 +135,10 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 ![Recipe definition VI](/images/recipe-6.png) 
 
 ## Step-6: Verifying AWS Inspector findings  
-After you Run Pipeline - it will take about an hour for Inspector to Install agent, run assessment and provide findings. 
+After you Run Pipeline - it will take about an hour for Inspector to Install agent, run assessment and provide findings.
 
-If you navigate to [Inspector console] (https://us-east-1.console.aws.amazon.com/inspector/home?region=us-east-1#/run) you can find Assessment run and findings accordingly 
+If you navigate to [Inspector console](https://us-east-1.console.aws.amazon.com/inspector/home?region=us-east-1#/run) you can find Assessment run and findings accordingly
 
-![Inspector I](/images/inspector-1.png) 
+![Inspector I](/images/inspector-1.png)
 
 ![Inspector II](/images/inspector-2.png) 
