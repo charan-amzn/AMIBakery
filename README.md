@@ -42,8 +42,11 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 2. Confirm that **AWS service** and **EC2** are selected, then click **Next** to view permissions.
 3. Search for following 3 policies and select check box beside them 
    > AmazonInspectorFullAccess 
+
    > EC2InstanceProfileForImageBuilder
+
    > AmazonEC2RoleforSSM   
+   
 4. Go to next step, give role a name such as SSM_Instance_Role and click Create Role
 ![Create Role](/images/createrole.png)
 
