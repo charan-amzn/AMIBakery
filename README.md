@@ -34,7 +34,7 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 1. Follow [this deep link to navigate to Amazon S3 console.] (https://s3.console.aws.amazon.com/s3/home?region=us-east-1#)
 2. Click on Create Bucket and create a bucket with unique name such as "configuration-bucket-***teamhash***"
 3. While creating bucket leave rest of settings untouched
-4. Now navigate to **cloudwatch** and **cis-benchmark** directories in the workshop module and copy all the files in s3 folder to bucket you created in step 3
+4. Now navigate to **cloudwatch** and **cis-benchmarks** directories in the workshop module and copy all the files in s3 folder to bucket you created in step 3
 ![copy artifacts](/images/s3files.png)  
 
 ## Step-3: Create SSM Instance Role 
@@ -46,8 +46,28 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
    > EC2InstanceProfileForImageBuilder
 
    > AmazonEC2RoleforSSM   
-   
+
 4. Go to next step, give role a name such as SSM_Instance_Role and click Create Role
 ![Create Role](/images/createrole.png)
 
 This role is used by SSM agent running on EC2 Instance to execute custom scripts on base AMI and create golden AMI respectively.
+
+## Step-4: Create Component Documents for EC2 Image Builder 
+1. Follow [this deep link to navigate to EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewComponents)
+2. Click on Create Component and select following settings -
+   1. Compatible OS Versions "Amazon Linux 2"
+   2. Component name as "setup-cloudwatch-agent"
+   3. Component version as "1.0.0"
+   4. Description as "Installing and Configuring CloudWatch Agent"
+![Create Build Component I](/images/createcomponent-1.png)
+3. In the "Definition document" section - copy contents from file named "cloudwatch.yaml" in **cloudwatch** directory of the workshop 
+4. Replace '<s3_bucket>' in line 22 of YAML component file with bucket name you created in Step-2 above and click Create Component 
+5. Click on Create component again and select following settings -
+   1. Compatible OS Versions "Amazon Linux 2"
+   2. Component name as "cis-benchmarks"
+   3. Component version as "1.0.0"
+   4. Description as "Component to build a hardened image according to CIS Amazon Linux 2 Benchmark version 1.0.0"
+![Create Build Component II](/images/createcomponent-2.png) 
+6. In the "Definition document" section - copy contents from file named "cis-benchmarks.yaml" in **cis-benchmarks** directory of the workshop 
+7. Replace '<s3_bucket>' of YAML component file with bucket name you created in Step-2 above and click Create Component 
+![Final Component Screen](/images/createcomponent-final.png) 
