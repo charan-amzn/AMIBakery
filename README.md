@@ -37,7 +37,7 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 4. Now navigate to **cloudwatch** and **cis-benchmarks** directories in the workshop module and copy all the files in s3 folder to bucket you created in step 3
 ![copy artifacts](/images/s3files.png)  
 
-## Step-3: Create SSM Instance Role 
+## Step-3: Create SSM Instance Role and SNS subscription
 1. Follow [this deep link to create an EC2 Instance Role with SSM Access](https://console.aws.amazon.com/iam/home?region=us-east-1#/roles$new?step=type&commonUseCase=EC2%2BEC2&selectedUseCase=EC2)
 2. Confirm that **AWS service** and **EC2** are selected, then click **Next** to view permissions.
 3. Search for following 3 policies and select check box beside them 
@@ -52,8 +52,14 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 
 This role is used by SSM agent running on EC2 Instance to execute custom scripts on base AMI and create golden AMI respectively.
 
+5. Follow [this deep link to create SSM Topic](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/create-topic)
+6. Give SNS Topic a name such as ImageBuilder and Create Topic 
+7. Click Create Subscription, select Protocol as Email and give your email address as Endpoint
+![Create SNS Subscription](/images/sns.png)
+8. You will get an email to confirm subscription and confirm it accordingly
+
 ## Step-4: Create Component Documents for EC2 Image Builder 
-1. Follow [this deep link to navigate to EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewComponents)
+1. Follow [this deep link to navigate to Components tab of EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewComponents)
 2. Click on Create Component and select following settings -
    1. Compatible OS Versions "Amazon Linux 2"
    2. Component name as "setup-cloudwatch-agent"
@@ -71,3 +77,29 @@ This role is used by SSM agent running on EC2 Instance to execute custom scripts
 6. In the "Definition document" section - copy contents from file named "cis-benchmarks.yaml" in **cis-benchmarks** directory of the workshop 
 7. Replace '<s3_bucket>' of YAML component file with bucket name you created in Step-2 above and click Create Component 
 ![Final Component Screen](/images/createcomponent-final.png) 
+
+## Step-5: Create EC2 Image Builder Pipeline  
+1. Follow [this deep link to navigate to Pipeline tab of EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewPipeline)
+2. Click Create Image Pipeline and leave Select managed images bullet checked and pick Amazon Linux as Image OS. 
+3. Click on Browse images and select "Amazon Linux 2 x86 | Version 2020.9.4" 
+![Recipe definition I](/images/recipe-1.png) 
+4. Leave Storage Section with default values
+5. In Build Components section, click on Browse build components and select following components in order 
+   1. update-linux
+   2. update-linux-kernel-mainline
+6. Without exiting search bar, click on drop down beside search, select "Created by me" and pick following components in order
+   1. setup-cloudwatch-agent
+   2. cis-benchmarks 
+![Recipe definition II](/images/recipe-2.png) 
+7. In Test Components section, click on Browse tests and select following components in order 
+   1. chrony-time-configuration-test
+   2. inspector-test-linux
+![Recipe definition III](/images/recipe-3.png) 
+8. Click Next and give the pipeline name of your choice such as "GoldenAMIPipeline"
+9. For IAM Role, from drop down pick IAM Role created in Step-3 i.e. SSM_Instance_Role and leave Build Schedule as Manual 
+![Recipe definition IV](/images/recipe-4.png) 
+10. Under Infrastructure Settings, select Instance type as "t3.medium", SNS Topic as one you created in Step-3 above and S3 Location for Pipeline Logs as same bucket we created to store component files and click Next 
+![Recipe definition V](/images/recipe-5.png) 
+11. [**Optional step**] In the next page, under Output AMI - give a name for AMI, tags and under Distribution settings - you can add a colleague's account number as optional value to distribute AMI resulted as a part of pipeline 
+12. Create Pipeline, select it and from Actions tab - click **Run Pipeline**
+![Recipe definition VI](/images/recipe-6.png) 
