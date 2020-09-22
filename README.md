@@ -1,21 +1,30 @@
-# ec2-image-builder
-Custom Build and Test Components developed for AWS EC2 Image Builder (https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html)
+# EC2 Image Builder Workshop
 
-## Configuration
-1. Create a S3 bucket (configuration-bucket) and place files in `S3` folder of component.
-2. Create EC2 Instance Role and attach following required policies:
-- arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
-- arn:aws:iam::aws:policy/EC2InstanceProfileForImageBuilder
-3. Replace `<bucket-name>` with your newly created bucket name (configuration-bucket) in yaml component files stored in Lab-1 directory 
-4. [Create EC2 Image Builder](https://console.aws.amazon.com/imagebuilder/home#createPipeline) pipeline with Amazon Linux 2
-5. [Create Components](https://console.aws.amazon.com/imagebuilder/home#createComponent) that you want to use by coping yaml component file
-6. Select IAM Role that you have created on Step 2
-7. Name your pipeline
-  - For build components pick update-linux, update-linux-kernel-mainline, setup-cloudwatch-agent and cis-benchmarks
-  - For test components pick chrony-time-configuration-test and inspector-test-linux
-8. Name your AMI
-9. Trigger pipeline
+EC2 Image Builder is a fully managed AWS service that makes it easier to automate the creation, management, and deployment of customized, secure, and up-to-date “golden” server images that are pre-installed and pre-configured with software and settings to meet specific IT standards. 
 
-## Troubleshooting
-- You can disable `Terminate instance on failure` option and select a keypair while creating a pipeline to connect and troubleshoot any errors on the build instance.
-- You can follow and check AWS Systems Manager logs from, https://console.aws.amazon.com/systems-manager/automation/executions
+When you use the EC2 Image Builder console to create a golden image, a wizard guides you through the following steps. 
+- Select Source Image 
+- Create Image Recipe 
+- Output 
+- Distribute 
+
+In this lab, you will go through a process that involves selecting Amazon Linux 2 AMI as base image and creating custom Build/Test Components as development artifacts within AWS EC2 Image Builder (https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html)
+
+## Step-1: Login to AWS Workshop Portal 
+This workshop creates an AWS account. 
+
+Connect to the portal by clicking the button or browsing to https://dashboard.eventengine.run/. You will need the Participant Hash to track your unique session and facilitators will be providing you a hash accordingly.
+
+The following screen shows up.
+
+![Event Engine](/images/event-engine-initial-screen.png)
+
+Enter the provided hash in the text box. The button on the bottom right corner changes to **Accept Terms & Login**. Click on that button to continue.
+
+![Event Engine Dashboard](/images/event-engine-dashboard.png)
+
+Click on **AWS Console** on dashboard.
+
+![Event Engine AWS Console](/images/event-engine-aws-console.png)
+
+Take the defaults and click on **Open AWS Console**. This will open AWS Console in a new browser tab.
