@@ -36,3 +36,15 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 3. While creating bucket leave rest of settings untouched
 4. Now navigate to **cloudwatch** and **cis-benchmark** directories in the workshop module and copy all the files in s3 folder to bucket you created in step 3
 ![copy artifacts](/images/s3files.png)  
+
+## Step-3: Create SSM Instance Role 
+1. Follow [this deep link to create an EC2 Instance Role with SSM Access](https://console.aws.amazon.com/iam/home?region=us-east-1#/roles$new?step=type&commonUseCase=EC2%2BEC2&selectedUseCase=EC2)
+2. Confirm that **AWS service** and **EC2** are selected, then click **Next** to view permissions.
+3. Search for following 3 policies and select check box beside them 
+   > AmazonInspectorFullAccess 
+   > EC2InstanceProfileForImageBuilder
+   > AmazonEC2RoleforSSM   
+4. Go to next step, give role a name such as SSM_Instance_Role and click Create Role
+![Create Role](/images/createrole.png)
+
+This role is used by SSM agent running on EC2 Instance to execute custom scripts on base AMI and create golden AMI respectively.
