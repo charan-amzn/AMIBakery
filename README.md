@@ -122,3 +122,12 @@ Take the defaults and click on **Open AWS Console**. This will open AWS Console 
 11. [**Optional step**] In the next page, under Output AMI - give a name for AMI, tags and under Distribution settings - you can add a colleague's account number as optional value to distribute AMI resulted as a part of pipeline 
 12. Create Pipeline, select it and from Actions tab - click **Run Pipeline**
 ![Recipe definition VI](/images/recipe-6.png) 
+
+## Step-6: Verifying AWS Inspector findings  
+After you Run Pipeline - it will take about an hour for Inspector to Install agent, run assessment and provide findings. 
+
+If you navigate to [Inspector console] (https://us-east-1.console.aws.amazon.com/inspector/home?region=us-east-1#/run) you can find Assessment run and findings accordingly 
+
+![Inspector I](/images/inspector-1.png) 
+
+![Inspector II](/images/inspector-2.png) 
