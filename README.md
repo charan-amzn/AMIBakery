@@ -86,7 +86,7 @@ EC2 Image Builder leverages SSM Automation for Orchestrating Build/Test activiti
 
 In this step, we will create custom Components for Build phase of Pipeline.
 
-1. Follow [this deep link to navigate to Components tab of EC2 Image Builder console.] (https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewComponents)
+1. Follow [this deep link to navigate to Components tab of EC2 Image Builder console](https://console.aws.amazon.com/imagebuilder/home?region=us-east-1#viewComponents)
 2. Click on Create Component and select following settings -
    1. Compatible OS Versions "Amazon Linux 2"
    2. Component name as "setup-cloudwatch-agent"
