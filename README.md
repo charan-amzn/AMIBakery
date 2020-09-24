@@ -138,7 +138,7 @@ In this step, we will create a EC2 Image Builder Recipe and Pipeline by leveragi
 
 After you Run Pipeline - execute following actions
 
-1. Follow [this deep link to navigate to AWS Inspector Getting Started page](https://us-east-2.console.aws.amazon.com/inspector/home)
+1. Follow [this deep link to navigate to AWS Inspector Getting Started page](https://us-east-1.console.aws.amazon.com/inspector/home)
 2. Click Get Started and select Run Weekly (recommended) 
    
    ![Inspector](/images/inspector.png) 
