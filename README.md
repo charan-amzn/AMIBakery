@@ -36,7 +36,7 @@ In this step, we will create an S3 bucket and upload artifacts that will later b
 1. Follow [this deep link to navigate to Amazon S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-east-1#)
 2. Click on Create Bucket and create a bucket with unique name such as "configuration-bucket-***teamhash***"
 3. While creating bucket leave rest of settings untouched
-4. Now navigate to **cloudwatch** and **cis-benchmarks** directories in the workshop module and copy all the files in s3 folder to bucket you created in step 3
+4. Now navigate to **cloudwatch** and **cis-benchmarks** directories in the workshop module and copy all the files in **s3** folder inside those 2 directories to root location of bucket you created in step 3
 ![copy artifacts](/images/s3files.png)  
 
 ## Step-3: Create SSM Instance Role and SNS subscription
@@ -52,9 +52,10 @@ EC2 Image Builder leverages SSM Automation for Orchestrating Build/Test activiti
 
    > AmazonEC2RoleforSSM   
 
-4. Go to next step, give role a name such as SSM_Instance_Role and click Create Role
+4. Go to next step, skip tagging page, click next and give role a name such as SSM_Instance_Role and click Create Role
 ![Create Role](/images/createrole.png)
-5. Follow [this deep link to create IAM Policy Topic named SSMSendCommand](https://console.aws.amazon.com/iam/home?region=us-east-1#/policies$new?step=edit)
+
+5. Follow [this deep link to create IAM Policy](https://console.aws.amazon.com/iam/home?region=us-east-1#/policies$new?step=edit) named SSMSendCommand
    
       ```json
             {
@@ -73,14 +74,13 @@ EC2 Image Builder leverages SSM Automation for Orchestrating Build/Test activiti
             }
       ```
 
-6. Navigate to IAM Roles tab and search for SSM_Instance_Role created above
+6. Navigate to IAM Roles tab and search for **SSM_Instance_Role** created above
 7. Click Attach policies and attach the newly created SSMSendCommand policy
-
 8. Follow [this deep link to create SNS Topic](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/create-topic)
 9.  Give SNS Topic a name such as ImageBuilder and Create Topic 
-10. Click Create Subscription, select Protocol as Email and give your email address as Endpoint
+10.  Click Create Subscription, select Protocol as Email and give your email address as Endpoint
 ![Create SNS Subscription](/images/sns.png)
-9. You will get an email to confirm subscription and confirm it accordingly
+11. You will get an email to confirm subscription and confirm it accordingly
 
 ## Step-4: Create Component Documents for EC2 Image Builder 
 
@@ -114,10 +114,10 @@ In this step, we will create a EC2 Image Builder Recipe and Pipeline by leveragi
 3. Click on Browse images and select "Amazon Linux 2 x86 | Version 2020.9.4" 
 ![Recipe definition I](/images/recipe-1.png) 
 4. Leave Storage Section with default values
-5. In Build Components section, click on Browse build components and select following components in order 
+5. In Build Components section, click on Browse build components and select following components
    1. update-linux
    2. update-linux-kernel-mainline
-6. Without exiting search bar, click on drop down beside search, select "Created by me" and pick following components in order
+6. Click on Browse build again, click on drop down beside search, select "Created by me" and pick following components in order
    1. setup-cloudwatch-agent
    2. cis-benchmarks 
 ![Recipe definition II](/images/recipe-2.png) 
