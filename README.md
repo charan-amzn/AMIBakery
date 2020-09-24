@@ -134,10 +134,18 @@ In this step, we will create a EC2 Image Builder Recipe and Pipeline by leveragi
 12. Create Pipeline, select it and from Actions tab - click **Run Pipeline**
 ![Recipe definition VI](/images/recipe-6.png) 
 
-## Step-6: Verifying AWS Inspector findings  
-After you Run Pipeline - it will take about an hour for Inspector to Install agent, run assessment and provide findings.
+## Step-6: Creating AWS Inspector Service Linked Role and verifying findings  
 
-If you navigate to [Inspector console](https://us-east-1.console.aws.amazon.com/inspector/home?region=us-east-1#/run) you can find Assessment run and findings accordingly
+After you Run Pipeline - execute following actions
+
+1. Follow [this deep link to navigate to AWS Inspector Getting Started page](https://us-east-2.console.aws.amazon.com/inspector/home)
+2. Click Get Started and select Run Weekly (recommended) 
+   
+   ![Inspector](/images/inspector.png) 
+
+3. Click "Ok" and this will create Service Linked Role that Inspector would require 
+
+After an hour, once pipeline enters testing stage, if you navigate to [Inspector console](https://us-east-1.console.aws.amazon.com/inspector/home?region=us-east-1#/run) you can find Assessment run and findings accordingly
 
 ![Inspector I](/images/inspector-1.png)
 
